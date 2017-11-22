@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+        <head>
+                <meta charset="utf-8">
+                <title>Test</title>
+                <script
+                src="https://code.jquery.com/jquery-3.2.1.min.js"
+                integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+                crossorigin="anonymous"></script>
+        </head>   
+<body>
+Input Data: 
+<br>
+<input type="text" id="year" value="Year Ex:1900"/>
+<br>
+<textarea id="input_parse" cols="80" rows="30"> 
+</textarea>
+<br>
+<button type="button" id="submit" onclick="transform_parse()">Submit</button>
+<br>
+<textarea id="output_parse" cols="80" rows="30"> 
+    　Output here.
+</textarea>
+<textarea id="realout"></textarea>
+
+
+
+
+<script type="text/javascript">  
+    function transform_parse(){
+        var jsonall=JSON.parse(output_parse.value.trim());
+        var jsobj={};
+        jsonall.forEach(function(val,ind)
+          {
+            jsobj[val["NAME_SIM"].trim()+(val["BEG"]+"").substr(0,4)]=val["id"];
+          });
+
+        var sobj = $("<div>").append(input_parse.value);
+        sobj.find("span").each(function(ind)
+          {
+             if(jsobj[$(this).text().trim()+year.value]!=null){ 
+                    $(this).attr("place-id",jsobj[$(this).text().trim()+year.value]);
+             }
+          });
+
+        realout.value = sobj.html();
+    return 0;
+    } 
+</script> 
+
+</body>
+</html>
