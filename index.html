@@ -26,41 +26,41 @@ Input Data:
 
 <script type="text/javascript">
         var jsonall;
-       
+
         window.onload = function () {
          document.getElementById('uploadfile').onchange = readFile;
         };
         function readFile() {
                 file = this.files[0];
-         var fReader = new FileReader();           
+         var fReader = new FileReader();
          fReader.onload = function (event) {
                  jsonall  = JSON.parse(parsecsv(event.target.result.trim()));
-                 
+
          };
         fReader.readAsText(file);
         }
 
         function parsecsv(csv){
-                
+
                   var lines=csv.split("\n");
-                
+
                   var result = [];
-                
+
                   var headers=lines[0].split(",");
-                
+
                   for(var i=1;i<lines.length;i++){
-                
+
                           var obj = {};
                           var currentline=lines[i].split(",");
-                
+
                           for(var j=0;j<headers.length;j++){
                                   obj[headers[j]] = currentline[j];
                           }
-                
+
                           result.push(obj);
-                
+
                   }
-                  
+
                   //return result; //JavaScript object
                   return JSON.stringify(result); //JSON
          }
@@ -72,8 +72,8 @@ Input Data:
           {
 
            if(jsobj[val["NAME_SIM"].trim()]==null){
-                jsobj[val["NAME_SIM"].trim()]={};  
-            }        
+                jsobj[val["NAME_SIM"].trim()]={};
+            }
             if(val["BEG"]){
                 while((val["BEG"]+"").length<4){
                   val["BEG"] = (val["BEG"]+"")+"0";
@@ -87,7 +87,7 @@ Input Data:
 
             }
             if(val["BEG"] && val["END"]){
-              for(i=parseInt(val["BEG"]/100);i<=parseInt(val["END"]/100);i++){ 
+              for(i=parseInt(val["BEG"]/100);i<=parseInt(val["END"]/100);i++){
                 jsobj[val["NAME_SIM"].trim()][i+""]=val["id"];
 
               }
@@ -105,11 +105,11 @@ Input Data:
           {
 
            if(jsobj[val["NAME_SIM"].trim()]==null){
-                jsobj[val["NAME_SIM"].trim()]={};  
-            }      
+                jsobj[val["NAME_SIM"].trim()]={};
+            }
            if(jsobj[val["NAME_SIM"].trim().slice(0,-1)]==null){
-                jsobj[val["NAME_SIM"].trim().slice(0,-1)]={};  
-            }      
+                jsobj[val["NAME_SIM"].trim().slice(0,-1)]={};
+            }
             if(val["BEG"]){
                 while((val["BEG"]+"").length<4){
                   val["BEG"] = (val["BEG"]+"")+"0";
@@ -123,7 +123,7 @@ Input Data:
 
             }
             if(val["BEG"] && val["END"]){
-              for(i=parseInt(val["BEG"]/100);i<=parseInt(val["END"]/100);i++){ 
+              for(i=parseInt(val["BEG"]/100);i<=parseInt(val["END"]/100);i++){
                 jsobj[val["NAME_SIM"].trim()][i+""]=val["id"];
                 jsobj[val["NAME_SIM"].trim().slice(0,-1)][i+""]=val["id"];
               }
@@ -135,7 +135,7 @@ Input Data:
                 jsobj[val["NAME_SIM"].trim().slice(0,-1)][(val["END"]/100).toFixed()+""]=val["id"];
             }
           });
-  
+
 
         let  ipv = input_parse.value;
         let  count_dup = 0;
@@ -150,16 +150,17 @@ Input Data:
                 let x_sub =  x.slice(0,-1);
                 ipv = ipv.replace(new RegExp(x.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&'),"g"),"turing"+count+"csie")
                          .replace(new RegExp(x_sub.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&'),"g"),"alan"+count+"king");
+
                 }else if(x) {
                         ipv = ipv.replace(new RegExp(x.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&'),"g"),"turing"+count+"csie");
-                } 
+                }
 
 
 
 
         }
 
-
+        console.log(ipv);
         count_dup = 0;
 
         for (x in jsobj_pure){
@@ -170,13 +171,13 @@ Input Data:
                 }
                 if(x.length>2 && "縣廳堡所街庄城市州町里坪社門保軍倉埔崎郡溪潭營".indexOf(x.substr(-1))!=-1){
                 let x_sub =  x.slice(0,-1);
-                ipv = ipv.replace("turing"+count+"csie",`<span class="markup manual unsolved placeName" type="placeName">`+x+`</span>`)
-                         .replace("alan"+count+"king",`<span class="markup manual unsolved placeName" type="placeName">`+x_sub+`</span>`);
+                ipv = ipv.replace(new RegExp("turing"+count+"csie","g"),`<span class="markup manual unsolved placeName" type="placeName">`+x+`</span>`)
+                         .replace(new RegExp("alan"+count+"king","g"),`<span class="markup manual unsolved placeName" type="placeName">`+x_sub+`</span>`);
 
 
                 }else if(x) {
                         ipv = ipv.replace("turing"+count+"csie",`<span class="markup manual unsolved placeName" type="placeName">`+x+`</span>`);
-                } 
+                }
 
         }
         var sobj = $("<div>").append(ipv);
@@ -184,7 +185,7 @@ Input Data:
         sobj.find("span").each(function(ind){
              if(jsobj[$(this).text().trim()][year.value+""]!=null){
                 $(this).attr("placename_id",jsobj[$(this).text().trim()][year.value+""]);
-                    
+
              }
                 let array =[];
                 let array2 = [];
@@ -195,9 +196,9 @@ Input Data:
                                 array2.push(x);
                         }
 
-                        
+
                 }
-               array=array.map((ii,ind)=>(array2[ind]+"***"+ii)); 
+               array=array.map((ii,ind)=>(array2[ind]+"***"+ii));
                array.sort( (a,b)=>
                         {
                                 let aa=a.substr(0,4)*1;
@@ -212,7 +213,7 @@ Input Data:
                         } );
                 array=array.map((ii)=>(ii.split("***")[1]));
                 $(this).attr("candidate_id",array.join(" "));
-             
+
           });
 
           output_parse.value = sobj.html();
