@@ -2,32 +2,139 @@
 <html>
         <head>
                 <meta charset="utf-8">
-                <title>Test</title>
-                <script
-                src="https://code.jquery.com/jquery-3.2.1.min.js"
-                integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+                <title>PlaceName Marking System</title>
+                <script src="https://code.jquery.com/jquery-3.2.1.min.js"
+                  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
                 crossorigin="anonymous"></script>
+                <script src="./PlaceName.js"></script>
 
-                <script
-                src="./PlaceName.js"></script>
+                <!-- Bootstrap core CSS -->
+                <link href="./css/bootstrap.min.css" rel="stylesheet">
+
+                <!-- Custom styles for this template -->
+                <style>
+                  body {
+                    padding-top: 54px;
+                  }
+                  @media (min-width: 992px) {
+                    body {
+                      padding-top: 56px;
+                    }
+                  }
+
+                .btn-file {
+                    position: relative;
+                    overflow: hidden;
+                  }
+                  .btn-file input[type=file] {
+                    position: absolute;
+                    top: 0;
+                    right: 0;
+                    min-width: 100%;
+                    min-height: 100%;
+                    font-size: 100px;
+                    text-align: right;
+                    filter: alpha(opacity=0);
+                    opacity: 0;
+                    background: red;
+                    cursor: inherit;
+                    display: block;
+                  }
+                  input[readonly] {
+                    background-color: white !important;
+                    cursor: text !important;
+                  }
+
+                </style>
+
         </head>
 <body>
-Input Data:
-<br>
-<input id="uploadfile"  type="file">
-<br>
-<input type="text" id="year" placeholder="Year Ex:1900">
-<br>
-<textarea id="input_parse" cols="80" rows="30" placeholder="Input the Markus File"></textarea>
-<br>
-<button type="button" id="submit" onclick="transform_parse()">Submit</button>
-<br>
-<textarea id="output_parse" cols="80" rows="30" placeholder="There is the result"></textarea>
+
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container">
+      <a class="navbar-brand" href="#">PlaceName Marking System</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="#">Home
+              <span class="sr-only">(current)</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="modal" data-target="#AboutMe">About</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+
+  <!-- Page Content -->
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12 text-center">
+        <h1 class="mt-5">PlaceName Marking System</h1>
+          <p>
+            <label>  Upload PlaceName File (.CSV):</label>
+              <span>
+                <span class="btn btn-primary btn-file">
+                  Browse&hellip; <input type="file"  id="uploadfile" single>
+                </span>
+             </span>
+           </p>
+            <p>
+              <span>
+              <input type="text" id="year" class="form-control" placeholder="Year Ex:1900">
+              </span>
+            </p>
+            <p>
+            <textarea id="input_parse" cols="80" rows="30" class="form-control" placeholder="Input Plain Text"></textarea>
+            </p>
+            <p>
+            <button type="button" id="submit" class="btn btn-primary" onclick="transform_parse()">Submit</button>
+            </p>
+            <textarea id="output_parse" cols="80" rows="30" class="form-control" placeholder="The result is compatible with MARUS file"></textarea>
+      </div>
+    </div>
+  </div>
+
+    <!-- Modal -->
+  <div id="AboutMe" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">About</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+          <p>This tool is part of Docusky.</p>
+          <p>DocuSky由 數位典藏與自動推論實驗室 國立臺灣大學數位人文研究中心、資訊工程學系 數位典藏與自動推論實驗室 數位典藏與自動推論實驗室規劃</p>
+          <p>Designer: <a href="http://profile.hcy.idv.tw">HUANG, CHIH-YANG</a></p>
+
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
 
 
 
 
 
+
+  <!-- Bootstrap core JavaScript -->
+  <script src="./jquery/jquery.min.js"></script>
+  <script src="./jquery/bootstrap.bundle.min.js"></script>
 
 </body>
 </html>
