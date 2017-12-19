@@ -134,7 +134,7 @@
 
         }
 
-        console.log(ipv);
+        //console.log(ipv);
         count_dup = 0;
 
         for (x in jsobj_pure){
@@ -155,7 +155,7 @@
 
         }
         var sobj = $("<div>").append(ipv);
-        console.log(ipv);
+        //console.log(ipv);
         sobj.find("span").each(function(ind){
              if(jsobj[$(this).text().trim()][year.value+""]!=null){
                 $(this).attr("placename_id",jsobj[$(this).text().trim()][year.value+""]);
@@ -189,14 +189,48 @@
                 $(this).attr("candidate_id",array.join(" "));
 
           });
-
+          show_color_before_change_placename.innerHTML = `<style>span{color:red}</style>`+sobj.html();
           output_parse.value = sobj.html();
+          
+          //window.open("about:blank").document.write(`<style>span{color:red}</style>`+sobj.html());
+          var ucp_temp = "";
+          sobj.find("span").each(function(ind){
+                 let selectoption = "";
+                 if($(this).attr("placename_id")){
+                        selectoption = selectoption+`<option value="`+$(this).attr("placename_id")+""+`">`+$(this).attr("placename_id")+""+`</option>`;
+                 }
+                 $(this).attr("candidate_id").split(" ").forEach(function(element){
+                        selectoption = selectoption+`<option value="`+element+""+`">`+element+""+`</option>`;
 
-          window.open("about:blank").document.write(`<style>span{color:red}</style>`+sobj.html());
+                 });
+                ucp_temp = ucp_temp+`<div class="form-group" class="col-sm-3">`+$(this).text().trim()+""+`<form><select name="`+$(this).text().trim()+`">`
+                +selectoption+`</select></form>`+`</div>`;
+
+
+
+          });
+          
+          console.log(ucp_temp);
+          user_change_placename.innerHTML = ucp_temp;
+
 
 
             return 0;
     }
+
+    
+
+
+
+    function user_change_parse(){
+   
+
+        user_change_placename.innerHTML = output_parse.value;
+
+
+
+    }
+
 
     function escapeSpecialChars(jsonString) {
 
