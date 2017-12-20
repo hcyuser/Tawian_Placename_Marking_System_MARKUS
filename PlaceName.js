@@ -3,6 +3,7 @@
 
         window.onload = function () {
          document.getElementById('uploadfile').onchange = readFile;
+         //alert($.contextMenu==null);
         };
         function readFile() {
                 file = this.files[0];
@@ -10,6 +11,7 @@
          fReader.onload = function (event) {
                  jsonall  = JSON.parse(parsecsv(event.target.result.trim()));
 
+                
          };
         fReader.readAsText(file);
         }
@@ -40,11 +42,13 @@
          }
     function transform_parse(){
         var  jsobj={};
+        var  jsobj_ntuid={};
+
         var  jsobj_pure = {};
 
         jsonall.forEach(function(val,ind)
           {
-
+        
            if(jsobj[val["NAME_SIM"].trim()]==null){
                 jsobj[val["NAME_SIM"].trim()]={};
             }
@@ -52,7 +56,6 @@
                 while((val["BEG"]+"").length<4){
                   val["BEG"] = (val["BEG"]+"")+"0";
                  }
-
             }
             if(val["END"]){
                 while((val["END"]+"").length<4){
@@ -72,6 +75,16 @@
                 jsobj[val["NAME_SIM"].trim()][(val["END"]/100).toFixed()+""]=val["id"];
 
             }
+
+
+
+            if(jsobj_ntuid[val["id"].trim()]==null){
+                jsobj_ntuid[val["id"].trim()]={};
+            } 
+            jsobj_ntuid[val["id"]]["year"]=(val["BEG"] || "" ).substr(0,4)+""+"~"+ (val["END"] || "" ).substr(0,4)+"";
+            jsobj_ntuid[val["id"]]["x"]= (val["X"] || "" )+"";
+            jsobj_ntuid[val["id"]]["y"]= (val["Y"] || "" )+"";
+
           });
           jsobj_pure =  Object.assign({}, jsobj);
           jsobj = {};
@@ -117,16 +130,19 @@
         for (x in jsobj_pure){
                 count_dup++;
                 let count  = count_dup+"";
-                while(count.length<5){
-                        count = "0"+count;
-                }
+    
                 if(x.length>2 && "縣廳堡所街庄城市州町里坪社門保軍倉埔崎郡溪潭營".indexOf(x.substr(-1))!=-1){
                 let x_sub =  x.slice(0,-1);
                 ipv = ipv.replace(new RegExp(x.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&'),"g"),"turing"+count+"csie")
                          .replace(new RegExp(x_sub.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&'),"g"),"alan"+count+"king");
 
+                     
+
                 }else if(x) {
                         ipv = ipv.replace(new RegExp(x.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&'),"g"),"turing"+count+"csie");
+
+                      
+
                 }
 
 
@@ -140,9 +156,7 @@
         for (x in jsobj_pure){
                 count_dup++;
                 let count  = count_dup+"";
-                while(count.length<5){
-                        count = "0"+count;
-                }
+    
                 if(x.length>2 && "縣廳堡所街庄城市州町里坪社門保軍倉埔崎郡溪潭營".indexOf(x.substr(-1))!=-1){
                 let x_sub =  x.slice(0,-1);
                 ipv = ipv.replace(new RegExp("turing"+count+"csie","g"),`<span class="markup manual unsolved placeName" type="placeName">`+x+`</span>`)
@@ -150,7 +164,11 @@
 
 
                 }else if(x) {
-                        ipv = ipv.replace("turing"+count+"csie",`<span class="markup manual unsolved placeName" type="placeName">`+x+`</span>`);
+
+
+                        ipv = ipv.replace(new RegExp("turing"+count+"csie","g"),`<span class="markup manual unsolved placeName" type="placeName">`+x+`</span>`);
+
+
                 }
 
         }
@@ -188,12 +206,46 @@
                 array=array.map((ii)=>(ii.split("***")[1]));
                 $(this).attr("candidate_id",array.join(" "));
 
+                $(this).attr("contextmenu_index",ind);
+                let tempitemobj = {};
+                if($(this).attr("placename_id")){
+                        tempitemobj[$(this).attr("placename_id")] = {name:$(this).attr("placename_id")+" "+jsobj_ntuid[$(this).attr("placename_id")]["year"]};
+                 }
+                 $(this).attr("candidate_id").split(" ").forEach(function(element){
+                        tempitemobj[element] = {name:element+" "+jsobj_ntuid[element]["year"]};
+                 });
+
+                sobj.contextMenu({
+                        selector: "[contextmenu_index=\""+ind+"\"]",
+                    callback: function(key, options) {
+                        //var m = "clicked: " + key + " on " + $(this).text();
+                        //window.console && console.log(m) || alert(m); 
+                        if($(this).attr("candidate_id").split(" ").indexOf($(this).attr("placename_id"))==-1){
+                                $(this).attr("candidate_id",$(this).attr("candidate_id")+" "+$(this).attr("placename_id"));
+                        }
+                        $(this).attr("placename_id",key);
+
+                    },
+                    items: tempitemobj 
+                   });
+                
+
           });
-          show_color_before_change_placename.innerHTML = `<style>span{color:red}</style>`+sobj.html();
+
+          $(show_color_before_change_placename).html("");
+          
+          
+
+          $(show_color_before_change_placename).append(sobj);
+        
+
+
+
           output_parse.value = sobj.html();
           
-          //window.open("about:blank").document.write(`<style>span{color:red}</style>`+sobj.html());
+         /* //window.open("about:blank").document.write(`<style>span{color:red}</style>`+sobj.html());
           var ucp_temp = "";
+
           sobj.find("span").each(function(ind){
                  let selectoption = "";
                  if($(this).attr("placename_id")){
@@ -210,11 +262,11 @@
 
           });
           
-          console.log(ucp_temp);
+          //console.log(ucp_temp);
           user_change_placename.innerHTML = ucp_temp;
 
 
-
+          */
             return 0;
     }
 
@@ -225,7 +277,7 @@
     function user_change_parse(){
    
 
-        user_change_placename.innerHTML = output_parse.value;
+       output_parse.value = $("#show_color_before_change_placename").find("div").html();
 
 
 
