@@ -76,22 +76,23 @@
 
             }
 
-
-
-            if(jsobj_ntuid[val["id"].trim()]==null){
-                jsobj_ntuid[val["id"].trim()]={};
-            } 
-            if(!val["END"] && val["BEG"]){
-                jsobj_ntuid[val["id"]]["year"]=(val["BEG"] || "" ).substr(0,4)+"";
-            }else if(!val["BEG"] && val["END"]) {
-                jsobj_ntuid[val["id"]]["year"]=(val["END"] || "" ).substr(0,4)+"";
-            }else{
-                jsobj_ntuid[val["id"]]["year"]=(val["BEG"] || "" ).substr(0,4)+""+"~"+ (val["END"] || "" ).substr(0,4)+"";
+            if(jsobj_ntuid[val["id"]]==null){
+                jsobj_ntuid[val["id"]]={};
             }
+            if(val["BEG"] && val["END"]){
+                jsobj_ntuid[val["id"]]["ntuidyear"]=(val["BEG"] || "" ).substr(0,4)+""+"~"+ (val["END"] || "" ).substr(0,4)+"";
+              }else if(val["BEG"]){
+                  jsobj_ntuid[val["id"]]["ntuidyear"]=(val["BEG"] || "" ).substr(0,4)+"";
+              }else if(val["END"]){
+                jsobj_ntuid[val["id"]]["ntuidyear"]=(val["END"] || "" ).substr(0,4)+"";
+              }
            
             jsobj_ntuid[val["id"]]["x"]= (val["X"] || "" )+"";
             jsobj_ntuid[val["id"]]["y"]= (val["Y"] || "" )+"";
 
+            //console.log(jsobj_ntuid[val["id"]]["year"]);
+            //console.log(jsobj_ntuid[val["id"]]["x"]);
+            //console.log(jsobj_ntuid[val["id"]]["y"]);
           });
           jsobj_pure =  Object.assign({}, jsobj);
           jsobj = {};
@@ -214,31 +215,49 @@
                 $(this).attr("candidate_id",array.join(" "));
 
                 $(this).attr("contextmenu_index",ind);
-                let tempitemobj = {};
-                if($(this).attr("placename_id")){
-                        tempitemobj[$(this).attr("placename_id")] = {name:$(this).attr("placename_id")+" C.E."+jsobj_ntuid[$(this).attr("placename_id")]["year"]};
+                var tempitemobj = {};
+                var tempitemobj2 = {};
+                if($(this).attr("placename_id")!=null){
+                        tempitemobj[$(this).attr("placename_id")] = {name : ($(this).attr("placename_id")+" C.E."+jsobj_ntuid[$(this).attr("placename_id")]["ntuidyear"])};
                  }
-                 $(this).attr("candidate_id").split(" ").forEach(function(element){
-                       if(jsobj_ntuid[element]["year"]!=null){
-                                tempitemobj[element] = {name:element+" C.E."+jsobj_ntuid[element]["year"]};
+                 $(this).attr("candidate_id").trim().split(" ").forEach(function(val,ind){
+                      
+                      if(val){
+                        tempitemobj[val] = {name : (val+""+" C.E."+jsobj_ntuid[val.trim()]["ntuidyear"])};
+                      
+                      }  
+                       
            
-                       }
+                       
                  });
-
-                sobj.contextMenu({
-                        selector: "[contextmenu_index=\""+ind+"\"]",
-                    callback: function(key, options) {
-                        //var m = "clicked: " + key + " on " + $(this).text();
-                        //window.console && console.log(m) || alert(m); 
-                        if($(this).attr("candidate_id").split(" ").indexOf($(this).attr("placename_id"))==-1){
-                                $(this).attr("candidate_id",$(this).attr("candidate_id")+" "+$(this).attr("placename_id"));
-                        }
-                        $(this).attr("placename_id",key);
-
-                    },
-                    items: tempitemobj 
-                   });
                 
+           
+                 if(!$.isEmptyObject(tempitemobj)){
+                        sobj.contextMenu({
+                                selector: "[contextmenu_index=\""+ind+"\"]",
+                        callback: function(key, options) {
+                                //var m = "clicked: " + key + " on " + $(this).text();
+                                //window.console && console.log(m) || alert(m); 
+                                if($(this).attr("candidate_id").split(" ").indexOf($(this).attr("placename_id"))==-1){
+                                        $(this).attr("candidate_id",$(this).attr("candidate_id")+" "+$(this).attr("placename_id"));
+                                }
+                                $(this).attr("placename_id",key);
+
+                        },
+                        items: tempitemobj 
+                        });
+                  
+                }else{
+                        sobj.contextMenu({
+                                selector: "[contextmenu_index=\""+ind+"\"]",
+                        callback: function(key, options) {
+                                
+
+                        },
+                        items: {"no":{"name":"no item"}}
+                        });
+
+                }
 
           });
 
@@ -281,10 +300,10 @@
                // mymap.off();
                // mymap.remove();
          if(mymap==null){      
-                var mymap = L.map('showmap').setView([24.9,121.4], 6);
+                var mymap = L.map('showmap').setView([24.9,121.4], 8);
                 L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
                 attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
-                maxZoom: 18,
+                maxZoom: 20,
                 id: 'mapbox.streets',
                 accessToken: 'pk.eyJ1IjoiaGN5dXNlciIsImEiOiJjamJmdmRva3IyemlsMzRxZmxyampzeXBjIn0.7TrJpOyMKft7JSaszfbVqQ'
                 }).addTo(mymap);
@@ -306,14 +325,14 @@
                         let x = $(this).attr("candidate_id").split(" ");
                         for(let i=0;i<x.length;i++){
                                 var marker = L.marker([jsobj_ntuid[x[i]]["y"]+"",jsobj_ntuid[x[i]]["x"]+""]).addTo(mymap);
-                                marker.bindPopup($(this).text().trim()+"<br>"+x[i]+""+"<br> C.E."+jsobj_ntuid[x[i]]["year"]+"");
+                                marker.bindPopup($(this).text().trim()+"<br>"+x[i]+""+"<br> C.E."+jsobj_ntuid[x[i]]["ntuidyear"]+"");
                 
                         }
 
                 }
                 if($(this).attr("placename_id")){
                                 var marker = L.marker([jsobj_ntuid[$(this).attr("placename_id")+""]["y"]+"",jsobj_ntuid[$(this).attr("placename_id")+""]["x"]+""]).addTo(mymap);
-                                marker.bindPopup($(this).text().trim()+"<br>"+$(this).attr("placename_id")+""+"<br> C.E."+jsobj_ntuid[$(this).attr("placename_id")+""]["year"]+"");
+                                marker.bindPopup($(this).text().trim()+"<br>"+$(this).attr("placename_id")+""+"<br> C.E."+jsobj_ntuid[$(this).attr("placename_id")+""]["ntuidyear"]+"");
                      
                         
 
