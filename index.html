@@ -16,9 +16,21 @@
  
                 <script src="./contextmenu/dist/jquery.contextMenu.js" type="text/javascript"></script>
                 <script src="./PlaceName.js"></script>
+
+                  <!-- leafletjs map -->
+                  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css"
+                  integrity="sha512-M2wvCLH6DSRazYeZRIm1JnYyh22purTM+FDB5CsyxtQJYeKq83arPe5wgbNmcFXGqiSH2XR8dT/fJISVA1r/zQ=="
+                  crossorigin=""/>
+                  <!-- Make sure you put this AFTER Leaflet's CSS -->
+                  <script src="https://unpkg.com/leaflet@1.2.0/dist/leaflet.js"
+                  integrity="sha512-lInM/apFSqyy1o6s89K4iQUKg6ppXEgsVxT35HbzUupEVRh2Eu9Wdl4tHj7dZO0s1uvplcYGmt3498TtHq+log=="
+                  crossorigin=""></script>
+
+
                 <!-- Custom styles for this template -->
                 <style>
 
+                  #showmap { height: 300px; }
                   span.markup.manual.unsolved.placeName{color:red}
                   body {
                     padding-top: 54px;
@@ -105,6 +117,11 @@
             <button type="button" id="submit" class="btn btn-primary" onclick="transform_parse()">Submit</button>
             </p>
             <p>
+                <div class="container"> 
+                    <div id="showmap" style="display:none"></div>
+                </div>  
+            </p>  
+            <p>
                 <div class="panel panel-default">
                     <div class="panel-body" id="show_color_before_change_placename"></div>
                 </div>
@@ -116,6 +133,8 @@
                     
                 </div>
               </div> --> 
+
+
             </p>
             <button type="button" id="submit" class="btn btn-primary" onclick="user_change_parse()">Submit For Your Change</button>
             <p>
@@ -159,6 +178,11 @@
   <!-- Bootstrap core JavaScript -->
   
   <script src="./jquery/bootstrap.bundle.min.js"></script>
+ 
 
+
+
+
+     
 </body>
 </html>

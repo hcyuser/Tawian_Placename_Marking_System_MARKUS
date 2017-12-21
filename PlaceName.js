@@ -81,7 +81,14 @@
             if(jsobj_ntuid[val["id"].trim()]==null){
                 jsobj_ntuid[val["id"].trim()]={};
             } 
-            jsobj_ntuid[val["id"]]["year"]=(val["BEG"] || "" ).substr(0,4)+""+"~"+ (val["END"] || "" ).substr(0,4)+"";
+            if(!val["END"] && val["BEG"]){
+                jsobj_ntuid[val["id"]]["year"]=(val["BEG"] || "" ).substr(0,4)+"";
+            }else if(!val["BEG"] && val["END"]) {
+                jsobj_ntuid[val["id"]]["year"]=(val["END"] || "" ).substr(0,4)+"";
+            }else{
+                jsobj_ntuid[val["id"]]["year"]=(val["BEG"] || "" ).substr(0,4)+""+"~"+ (val["END"] || "" ).substr(0,4)+"";
+            }
+           
             jsobj_ntuid[val["id"]]["x"]= (val["X"] || "" )+"";
             jsobj_ntuid[val["id"]]["y"]= (val["Y"] || "" )+"";
 
@@ -209,10 +216,13 @@
                 $(this).attr("contextmenu_index",ind);
                 let tempitemobj = {};
                 if($(this).attr("placename_id")){
-                        tempitemobj[$(this).attr("placename_id")] = {name:$(this).attr("placename_id")+" "+jsobj_ntuid[$(this).attr("placename_id")]["year"]};
+                        tempitemobj[$(this).attr("placename_id")] = {name:$(this).attr("placename_id")+" C.E."+jsobj_ntuid[$(this).attr("placename_id")]["year"]};
                  }
                  $(this).attr("candidate_id").split(" ").forEach(function(element){
-                        tempitemobj[element] = {name:element+" "+jsobj_ntuid[element]["year"]};
+                       if(jsobj_ntuid[element]["year"]!=null){
+                                tempitemobj[element] = {name:element+" C.E."+jsobj_ntuid[element]["year"]};
+           
+                       }
                  });
 
                 sobj.contextMenu({
@@ -267,6 +277,52 @@
 
 
           */
+         $(showmap).removeAttr( "style" );
+               // mymap.off();
+               // mymap.remove();
+         if(mymap==null){      
+                var mymap = L.map('showmap').setView([24.9,121.4], 6);
+                L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
+                attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
+                maxZoom: 18,
+                id: 'mapbox.streets',
+                accessToken: 'pk.eyJ1IjoiaGN5dXNlciIsImEiOiJjamJmdmRva3IyemlsMzRxZmxyampzeXBjIn0.7TrJpOyMKft7JSaszfbVqQ'
+                }).addTo(mymap);
+
+        }
+         
+         var marker = {};
+         
+         if(marker){
+                mymap.removeLayer(marker);
+         }
+          //var marker = L.marker([24.9,121.4]).addTo(mymap);
+          //marker.bindPopup("Taipei1");
+          //var marker = L.marker([24.9,121.3]).addTo(mymap);
+          //marker.bindPopup("Taipei2");
+
+          sobj.find("span").each(function(ind){
+                if($(this).attr("candidate_id")){
+                        let x = $(this).attr("candidate_id").split(" ");
+                        for(let i=0;i<x.length;i++){
+                                var marker = L.marker([jsobj_ntuid[x[i]]["y"]+"",jsobj_ntuid[x[i]]["x"]+""]).addTo(mymap);
+                                marker.bindPopup($(this).text().trim()+"<br>"+x[i]+""+"<br> C.E."+jsobj_ntuid[x[i]]["year"]+"");
+                
+                        }
+
+                }
+                if($(this).attr("placename_id")){
+                                var marker = L.marker([jsobj_ntuid[$(this).attr("placename_id")+""]["y"]+"",jsobj_ntuid[$(this).attr("placename_id")+""]["x"]+""]).addTo(mymap);
+                                marker.bindPopup($(this).text().trim()+"<br>"+$(this).attr("placename_id")+""+"<br> C.E."+jsobj_ntuid[$(this).attr("placename_id")+""]["year"]+"");
+                     
+                        
+
+                }
+
+
+          });
+
+
             return 0;
     }
 
@@ -276,7 +332,7 @@
 
     function user_change_parse(){
    
-
+        $("#show_color_before_change_placename").find("span").removeAttr("contextmenu_index"); 
        output_parse.value = $("#show_color_before_change_placename").find("div").html();
 
 
