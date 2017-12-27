@@ -1,6 +1,6 @@
 
         var jsonall;
-
+        var mymap;
         window.onload = function () {
          document.getElementById('uploadfile').onchange = readFile;
          //alert($.contextMenu==null);
@@ -131,7 +131,10 @@
             }
           });
 
-
+        input_parse.value=input_parse.value.replace("压","庄");
+        input_parse.value=input_parse.value.replace("庒","庄");
+        input_parse.value=input_parse.value.replace("圧","庄");
+        input_parse.value=input_parse.value.replace("莊","庄");
         let  ipv = input_parse.value;
         let  count_dup = 0;
 
@@ -297,10 +300,24 @@
 
           */
          $(showmap).removeAttr( "style" );
-               // mymap.off();
-               // mymap.remove();
-         if(mymap==null){      
-                var mymap = L.map('showmap').setView([24.9,121.4], 8);
+         $(show_color_before_change_placename).removeAttr( "style" );
+         $("#showmap").html("");
+              
+
+        
+       
+        if(mymap == undefined || mymap == null){  
+                mymap = L.map('showmap').setView([23.9,121.0], 8);
+                L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
+                attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
+                maxZoom: 20,
+                id: 'mapbox.streets',
+                accessToken: 'pk.eyJ1IjoiaGN5dXNlciIsImEiOiJjamJmdmRva3IyemlsMzRxZmxyampzeXBjIn0.7TrJpOyMKft7JSaszfbVqQ'
+                }).addTo(mymap);
+
+        }else{
+                mymap.remove();  
+                mymap = L.map('showmap').setView([23.9,121.0], 8);
                 L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
                 attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
                 maxZoom: 20,
@@ -309,9 +326,7 @@
                 }).addTo(mymap);
 
         }
-         
          var marker = {};
-         
          if(marker){
                 mymap.removeLayer(marker);
          }
@@ -324,14 +339,14 @@
                 if($(this).attr("candidate_id")){
                         let x = $(this).attr("candidate_id").split(" ");
                         for(let i=0;i<x.length;i++){
-                                var marker = L.marker([jsobj_ntuid[x[i]]["y"]+"",jsobj_ntuid[x[i]]["x"]+""]).addTo(mymap);
+                                marker = L.marker([jsobj_ntuid[x[i]]["y"]+"",jsobj_ntuid[x[i]]["x"]+""]).addTo(mymap);
                                 marker.bindPopup($(this).text().trim()+"<br>"+x[i]+""+"<br> C.E."+jsobj_ntuid[x[i]]["ntuidyear"]+"");
                 
                         }
 
                 }
                 if($(this).attr("placename_id")){
-                                var marker = L.marker([jsobj_ntuid[$(this).attr("placename_id")+""]["y"]+"",jsobj_ntuid[$(this).attr("placename_id")+""]["x"]+""]).addTo(mymap);
+                                marker = L.marker([jsobj_ntuid[$(this).attr("placename_id")+""]["y"]+"",jsobj_ntuid[$(this).attr("placename_id")+""]["x"]+""]).addTo(mymap);
                                 marker.bindPopup($(this).text().trim()+"<br>"+$(this).attr("placename_id")+""+"<br> C.E."+jsobj_ntuid[$(this).attr("placename_id")+""]["ntuidyear"]+"");
                      
                         
