@@ -19,25 +19,29 @@
     normalize-path "^2.0.1"
     through2 "^2.0.3"
 
-"@socket.io/base64-arraybuffer@~1.0.2":
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/@socket.io/base64-arraybuffer/-/base64-arraybuffer-1.0.2.tgz#568d9beae00b0d835f4f8c53fd55714986492e61"
-
-"@types/component-emitter@^1.2.10":
-  version "1.2.11"
-  resolved "https://registry.yarnpkg.com/@types/component-emitter/-/component-emitter-1.2.11.tgz#50d47d42b347253817a39709fef03ce66a108506"
-
-"@types/cookie@^0.4.1":
-  version "0.4.1"
-  resolved "https://registry.yarnpkg.com/@types/cookie/-/cookie-0.4.1.tgz#bfd02c1f2224567676c1545199f87c3a861d878d"
+"@socket.io/component-emitter@~3.1.0":
+  version "3.1.2"
+  resolved "https://registry.yarnpkg.com/@socket.io/component-emitter/-/component-emitter-3.1.2.tgz#821f8442f4175d8f0467b9daf26e3a18e2d02af2"
 
 "@types/cors@^2.8.12":
   version "2.8.12"
   resolved "https://registry.yarnpkg.com/@types/cors/-/cors-2.8.12.tgz#6b2c510a7ad7039e98e7b8d3d6598f4359e5c080"
 
+"@types/node@*":
+  version "26.1.2"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-26.1.2.tgz#da79708f1f9c6294f4cdec8f455a3032b028808a"
+  dependencies:
+    undici-types "~8.3.0"
+
 "@types/node@>=10.0.0":
   version "17.0.21"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-17.0.21.tgz#864b987c0c68d07b4345845c3e63b75edd143644"
+
+"@types/ws@^8.5.12":
+  version "8.18.1"
+  resolved "https://registry.yarnpkg.com/@types/ws/-/ws-8.18.1.tgz#48464e4bf2ddfd17db13d845467f6070ffea4aa9"
+  dependencies:
+    "@types/node" "*"
 
 "JSV@>= 4.0.x":
   version "4.0.2"
@@ -792,10 +796,6 @@ comment-parser@^0.3.1:
   dependencies:
     readable-stream "^2.0.4"
 
-component-emitter@~1.3.0:
-  version "1.3.0"
-  resolved "https://registry.yarnpkg.com/component-emitter/-/component-emitter-1.3.0.tgz#16e4070fba8ae29b679f2215853ee181ab2eabc0"
-
 compress-commons@^1.2.0:
   version "1.2.2"
   resolved "https://registry.yarnpkg.com/compress-commons/-/compress-commons-1.2.2.tgz#524a9f10903f3a813389b0225d27c48bb751890f"
@@ -856,9 +856,9 @@ convert-source-map@1.X:
   version "1.5.1"
   resolved "https://registry.yarnpkg.com/convert-source-map/-/convert-source-map-1.5.1.tgz#b8278097b9bc229365de5c62cf5fcaed8b5599e5"
 
-cookie@~0.4.1:
-  version "0.4.2"
-  resolved "https://registry.yarnpkg.com/cookie/-/cookie-0.4.2.tgz#0e41f24de5ecf317947c82fc789e06a884824432"
+cookie@~0.7.2:
+  version "0.7.2"
+  resolved "https://registry.yarnpkg.com/cookie/-/cookie-0.7.2.tgz#556369c472a2ba910f2979891b526b3436237ed7"
 
 core-js@^2.4.0:
   version "2.5.1"
@@ -1046,11 +1046,17 @@ debug@3.X:
   dependencies:
     ms "2.0.0"
 
-debug@^4.1.1, debug@^4.3.3, debug@~4.3.1, debug@~4.3.2:
+debug@^4.1.1, debug@^4.3.3:
   version "4.3.3"
   resolved "https://registry.yarnpkg.com/debug/-/debug-4.3.3.tgz#04266e0b70a98d4462e6e288e38259213332b664"
   dependencies:
     ms "2.1.2"
+
+debug@~4.4.1:
+  version "4.4.3"
+  resolved "https://registry.yarnpkg.com/debug/-/debug-4.4.3.tgz#c6ae432d9bd9662582fce08709b038c58e9e3d6a"
+  dependencies:
+    ms "^2.1.3"
 
 decamelize@^1.1.1, decamelize@^1.1.2:
   version "1.2.0"
@@ -1229,26 +1235,24 @@ end-of-stream@~0.1.5:
   dependencies:
     once "~1.3.0"
 
-engine.io-parser@~5.0.3:
-  version "5.0.3"
-  resolved "https://registry.yarnpkg.com/engine.io-parser/-/engine.io-parser-5.0.3.tgz#ca1f0d7b11e290b4bfda251803baea765ed89c09"
-  dependencies:
-    "@socket.io/base64-arraybuffer" "~1.0.2"
+engine.io-parser@~5.2.1:
+  version "5.2.3"
+  resolved "https://registry.yarnpkg.com/engine.io-parser/-/engine.io-parser-5.2.3.tgz#00dc5b97b1f233a23c9398d0209504cf5f94d92f"
 
-engine.io@~6.1.0:
-  version "6.1.3"
-  resolved "https://registry.yarnpkg.com/engine.io/-/engine.io-6.1.3.tgz#f156293d011d99a3df5691ac29d63737c3302e6f"
+engine.io@~6.6.0:
+  version "6.6.9"
+  resolved "https://registry.yarnpkg.com/engine.io/-/engine.io-6.6.9.tgz#fd17e9f4e3a256423592574b60ac262e91af4b82"
   dependencies:
-    "@types/cookie" "^0.4.1"
     "@types/cors" "^2.8.12"
     "@types/node" ">=10.0.0"
+    "@types/ws" "^8.5.12"
     accepts "~1.3.4"
     base64id "2.0.0"
-    cookie "~0.4.1"
+    cookie "~0.7.2"
     cors "~2.8.5"
-    debug "~4.3.1"
-    engine.io-parser "~5.0.3"
-    ws "~8.2.3"
+    debug "~4.4.1"
+    engine.io-parser "~5.2.1"
+    ws "~8.21.0"
 
 engine@^0.1.8:
   version "0.1.12"
@@ -3557,6 +3561,10 @@ ms@2.1.2:
   version "2.1.2"
   resolved "https://registry.yarnpkg.com/ms/-/ms-2.1.2.tgz#d09d1f357b443f493382a8eb3ccd183872ae6009"
 
+ms@^2.1.3:
+  version "2.1.3"
+  resolved "https://registry.yarnpkg.com/ms/-/ms-2.1.3.tgz#574c8138ce1d2b5861f0b44579dbadd60c6615b2"
+
 multipipe@^0.1.0, multipipe@^0.1.2:
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/multipipe/-/multipipe-0.1.2.tgz#2a8f2ddf70eed564dff2d57f1e1a137d9f05078b"
@@ -4784,28 +4792,31 @@ sntp@2.x.x:
   dependencies:
     hoek "4.x.x"
 
-socket.io-adapter@~2.3.3:
-  version "2.3.3"
-  resolved "https://registry.yarnpkg.com/socket.io-adapter/-/socket.io-adapter-2.3.3.tgz#4d6111e4d42e9f7646e365b4f578269821f13486"
-
-socket.io-parser@~4.0.4:
-  version "4.0.4"
-  resolved "https://registry.yarnpkg.com/socket.io-parser/-/socket.io-parser-4.0.4.tgz#9ea21b0d61508d18196ef04a2c6b9ab630f4c2b0"
+socket.io-adapter@~2.5.2:
+  version "2.5.8"
+  resolved "https://registry.yarnpkg.com/socket.io-adapter/-/socket.io-adapter-2.5.8.tgz#c9fcabf602dbd5b09258ca98e5ec6a7ae4360698"
   dependencies:
-    "@types/component-emitter" "^1.2.10"
-    component-emitter "~1.3.0"
-    debug "~4.3.1"
+    debug "~4.4.1"
+    ws "~8.21.0"
+
+socket.io-parser@~4.2.4:
+  version "4.2.7"
+  resolved "https://registry.yarnpkg.com/socket.io-parser/-/socket.io-parser-4.2.7.tgz#679e51fe24d1c81df90fc5f7efe4a5f432fe99c0"
+  dependencies:
+    "@socket.io/component-emitter" "~3.1.0"
+    debug "~4.4.1"
 
 socket.io@^4.2.0:
-  version "4.4.1"
-  resolved "https://registry.yarnpkg.com/socket.io/-/socket.io-4.4.1.tgz#cd6de29e277a161d176832bb24f64ee045c56ab8"
+  version "4.8.3"
+  resolved "https://registry.yarnpkg.com/socket.io/-/socket.io-4.8.3.tgz#ca6ba1431c69532e1e0a6f496deebeb601dbc4df"
   dependencies:
     accepts "~1.3.4"
     base64id "~2.0.0"
-    debug "~4.3.2"
-    engine.io "~6.1.0"
-    socket.io-adapter "~2.3.3"
-    socket.io-parser "~4.0.4"
+    cors "~2.8.5"
+    debug "~4.4.1"
+    engine.io "~6.6.0"
+    socket.io-adapter "~2.5.2"
+    socket.io-parser "~4.2.4"
 
 source-map-resolve@^0.3.0:
   version "0.3.1"
@@ -5379,6 +5390,10 @@ underscore@~1.8.3:
   version "1.8.3"
   resolved "https://registry.yarnpkg.com/underscore/-/underscore-1.8.3.tgz#4f3fb53b106e6097fcf9cb4109f2a5e9bdfa5022"
 
+undici-types@~8.3.0:
+  version "8.3.0"
+  resolved "https://registry.yarnpkg.com/undici-types/-/undici-types-8.3.0.tgz#44e9fc9f3244648cdea35e4f9bb2d681e9410809"
+
 unherit@^1.0.4:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/unherit/-/unherit-1.1.0.tgz#6b9aaedfbf73df1756ad9e316dd981885840cd7d"
@@ -5780,9 +5795,9 @@ wrappy@1:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/wrappy/-/wrappy-1.0.2.tgz#b5243d8f3ec1aa35f1364605bc0d1036e30ab69f"
 
-ws@~8.2.3:
-  version "8.2.3"
-  resolved "https://registry.yarnpkg.com/ws/-/ws-8.2.3.tgz#63a56456db1b04367d0b721a0b80cae6d8becbba"
+ws@~8.21.0:
+  version "8.21.1"
+  resolved "https://registry.yarnpkg.com/ws/-/ws-8.21.1.tgz#045650cd4b1207809e7547146223c3814a9af586"
 
 xmlbuilder@^3.1.0:
   version "3.1.0"
