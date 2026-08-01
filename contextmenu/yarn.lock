@@ -486,6 +486,13 @@ brace-expansion@^1.0.0, brace-expansion@^1.1.7:
     balanced-match "^1.0.0"
     concat-map "0.0.1"
 
+brace-expansion@^1.1.7:
+  version "1.1.18"
+  resolved "https://registry.yarnpkg.com/brace-expansion/-/brace-expansion-1.1.18.tgz#3ce74d89885136be1535341f8c3d4425c29a5cab"
+  dependencies:
+    balanced-match "^1.0.0"
+    concat-map "0.0.1"
+
 braces@^1.8.2:
   version "1.8.5"
   resolved "https://registry.yarnpkg.com/braces/-/braces-1.8.5.tgz#ba77962e12dff969d6b76711e914b737857bf6a7"
